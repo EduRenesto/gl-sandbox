@@ -1,0 +1,11 @@
+[package]
+name = "gl-sandbox"
+version = "0.1.0"
+authors = ["Edu Renesto <edure95@gmail.com>"]
+
+[dependencies]
+glm = "*"
+gl = "*"
+
+[dependencies.glfw]
+git = "https://github.com/bjz/glfw-rs.git"
