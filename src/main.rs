@@ -4,7 +4,11 @@ extern crate gl;
 use glfw::{Action, Context, Key};
 use gl::types::*;
 
+mod util;
 mod mesh;
+mod shader;
+
+use shader::Shader;
 
 static WIDTH: u32 = 1280;
 static HEIGHT: u32 = 720;
@@ -24,6 +28,8 @@ fn render() {
 fn main() {
     let mut glfw = glfw::init(glfw::FAIL_ON_ERRORS).unwrap();
 
+    glfw.window_hint(glfw::WindowHint::ContextVersion(4, 5));
+
     let (mut window, events) = glfw.create_window(WIDTH, HEIGHT, "GL Sandbox", glfw::WindowMode::Windowed)
                                 .expect("Failed to create GLFW window");
 
@@ -33,6 +39,9 @@ fn main() {
     gl::load_with(|s| window.get_proc_address(s) as *const _);
 
     init_gl();
+
+    let s = Shader::new(&[(gl::VERTEX_SHADER, "res/shaders/test.vs"),
+                            (gl::FRAGMENT_SHADER, "res/shaders/test.fs")]).expect("kek");
 
     while !window.should_close() {
         glfw.poll_events();
