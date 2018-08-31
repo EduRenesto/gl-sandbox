@@ -1,5 +1,6 @@
 extern crate glfw;
 extern crate gl;
+extern crate glm;
 
 use glfw::{Action, Context, Key};
 use gl::types::*;
@@ -7,6 +8,7 @@ use gl::types::*;
 mod util;
 mod mesh;
 mod shader;
+mod vertexbuffer;
 
 use shader::Shader;
 
