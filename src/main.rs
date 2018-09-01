@@ -11,6 +11,8 @@ mod shader;
 mod vertexbuffer;
 
 use shader::Shader;
+use vertexbuffer::VertexBuffer;
+use mesh::Mesh;
 
 static WIDTH: u32 = 1280;
 static HEIGHT: u32 = 720;
@@ -21,10 +23,7 @@ fn init_gl() {
     }
 }
 
-fn render() {
-    unsafe {
-        gl::Clear(gl::COLOR_BUFFER_BIT);
-    }
+fn render(initialized: bool) {
 }
 
 fn main() {
@@ -45,6 +44,9 @@ fn main() {
     let s = Shader::new(&[(gl::VERTEX_SHADER, "res/shaders/test.vs"),
                             (gl::FRAGMENT_SHADER, "res/shaders/test.fs")]).expect("kek");
 
+    let mut initialized = false;
+    let mut testQuad = VertexBuffer::default();
+
     while !window.should_close() {
         glfw.poll_events();
 
@@ -57,7 +59,31 @@ fn main() {
             }
         }
 
-        render();
+        unsafe {
+            gl::Clear(gl::COLOR_BUFFER_BIT);
+        }
+
+        if !initialized {
+            let zero3 = glm::vec3(0.0, 0.0, 0.0);
+            let zero2 = glm::vec2(0.0, 0.0);
+
+            testQuad = VertexBuffer::from_mesh(Mesh{
+                positions: vec![glm::vec3(-1.0, 1.0, 0.0), glm::vec3(0.0, -1.0, 0.0), glm::vec3(1.0, 1.0, 0.0)],
+                normals: vec![zero3, zero3, zero3],
+                uvs: vec![zero2, zero2],
+                indices: vec![],
+
+                use_positions: true,
+                use_normals: false,
+                use_uvs: false,
+                indexed: false
+            }).unwrap();
+
+            initialized = true;
+        } else {
+            s.bind();
+            testQuad.draw();
+        }
 
         window.render_context().swap_buffers();
     }
