@@ -6,12 +6,15 @@ use glfw::{Action, Context, Key};
 
 mod util;
 mod mesh;
+mod camera;
 mod shader;
 mod vertexbuffer;
+mod actor;
 
 use shader::Shader;
 use vertexbuffer::VertexBuffer;
 use mesh::Mesh;
+use actor::Actor;
 
 static WIDTH: u32 = 1280;
 static HEIGHT: u32 = 720;
@@ -63,17 +66,20 @@ fn main() {
             let zero3 = glm::vec3(0.0, 0.0, 0.0);
             let zero2 = glm::vec2(0.0, 0.0);
 
-            test_quad = VertexBuffer::from_mesh(Mesh{
-                positions: vec![glm::vec3(-1.0, 1.0, 0.0), glm::vec3(0.0, -1.0, 0.0), glm::vec3(1.0, 1.0, 0.0)],
-                normals: vec![zero3, zero3, zero3],
-                uvs: vec![zero2, zero2],
-                indices: vec![],
+            //test_quad = VertexBuffer::from_mesh(Mesh{
+            //    positions: vec![glm::vec3(-1.0, 1.0, 0.0), glm::vec3(0.0, -1.0, 0.0), glm::vec3(1.0, 1.0, 0.0)],
+            //    normals: vec![zero3, zero3, zero3],
+            //    uvs: vec![zero2, zero2],
+            //    indices: vec![],
 
-                use_positions: true,
-                use_normals: false,
-                use_uvs: false,
-                indexed: false
-            }).unwrap();
+            //    use_positions: true,
+            //    use_normals: false,
+            //    use_uvs: false,
+            //    indexed: false
+            //}).unwrap();
+
+            test_quad = VertexBuffer::from_mesh(Mesh::from_obj("res/models/suzanne.obj").expect("failed to load obj file"))
+                .expect("failed to create vertex buffer");
 
             initialized = true;
         } else {
