@@ -3,7 +3,6 @@ extern crate gl;
 extern crate glm;
 
 use glfw::{Action, Context, Key};
-use gl::types::*;
 
 mod util;
 mod mesh;
@@ -19,11 +18,8 @@ static HEIGHT: u32 = 720;
 
 fn init_gl() {
     unsafe {
-        gl::ClearColor(0.0, 0.0, 1.0, 1.0);
+        gl::ClearColor(0.0, 0.0, 0.0, 1.0);
     }
-}
-
-fn render(initialized: bool) {
 }
 
 fn main() {
@@ -45,7 +41,7 @@ fn main() {
                             (gl::FRAGMENT_SHADER, "res/shaders/test.fs")]).expect("kek");
 
     let mut initialized = false;
-    let mut testQuad = VertexBuffer::default();
+    let mut test_quad = VertexBuffer::default();
 
     while !window.should_close() {
         glfw.poll_events();
@@ -67,7 +63,7 @@ fn main() {
             let zero3 = glm::vec3(0.0, 0.0, 0.0);
             let zero2 = glm::vec2(0.0, 0.0);
 
-            testQuad = VertexBuffer::from_mesh(Mesh{
+            test_quad = VertexBuffer::from_mesh(Mesh{
                 positions: vec![glm::vec3(-1.0, 1.0, 0.0), glm::vec3(0.0, -1.0, 0.0), glm::vec3(1.0, 1.0, 0.0)],
                 normals: vec![zero3, zero3, zero3],
                 uvs: vec![zero2, zero2],
@@ -82,7 +78,7 @@ fn main() {
             initialized = true;
         } else {
             s.bind();
-            testQuad.draw();
+            test_quad.draw();
         }
 
         window.render_context().swap_buffers();

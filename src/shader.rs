@@ -2,9 +2,6 @@ extern crate gl;
 
 use gl::types::*;
 
-use std::vec;
-use std::result;
-
 use std::str;
 use std::ptr;
 use std::ffi::CString;

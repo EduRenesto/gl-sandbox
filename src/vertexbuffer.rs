@@ -4,8 +4,6 @@ use std::ptr;
 use gl;
 use gl::types::*;
 
-use glm;
-
 use mesh::Mesh;
 
 /*
@@ -30,6 +28,8 @@ pub struct VertexBuffer {
 }
 
 impl Default for VertexBuffer {
+
+    // TODO use Option<T>
     fn default() -> VertexBuffer {
         VertexBuffer {
             position_buffer: 0,
@@ -52,9 +52,6 @@ impl VertexBuffer {
         let mut handle = 0 as GLuint;
 
         unsafe {
-            let ptr = &(mesh.positions[0].z) as *const f32;
-            let ptr2 = &(mesh.positions[1].x) as *const f32;
-
             gl::GenVertexArrays(1, &mut handle);
             gl::BindVertexArray(handle);
 
