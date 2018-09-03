@@ -22,6 +22,7 @@ static HEIGHT: u32 = 720;
 fn init_gl() {
     unsafe {
         gl::ClearColor(0.0, 0.0, 0.0, 1.0);
+        gl::Enable(gl::DEPTH_TEST);
     }
 }
 
@@ -59,7 +60,7 @@ fn main() {
         }
 
         unsafe {
-            gl::Clear(gl::COLOR_BUFFER_BIT);
+            gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
         }
 
         if !initialized {
