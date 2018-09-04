@@ -6,7 +6,10 @@ layout(location=2) in vec2 un_TexCoord;
 
 out vec3 out_Normal;
 
+uniform mat4 viewMatrix;
+uniform mat4 projMatrix;
+
 void main() {
     out_Normal = in_Normal;
-    gl_Position = vec4(in_Position, 1.0);
+    gl_Position = (projMatrix * viewMatrix) * vec4(in_Position, 1.0);
 }

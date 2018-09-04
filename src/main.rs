@@ -7,6 +7,7 @@ use glfw::{Action, Context, Key};
 mod util;
 mod mesh;
 mod camera;
+mod static_camera;
 mod shader;
 mod vertexbuffer;
 mod actor;
@@ -15,6 +16,8 @@ use shader::Shader;
 use vertexbuffer::VertexBuffer;
 use mesh::Mesh;
 use actor::Actor;
+use camera::Camera;
+use static_camera::StaticCamera;
 
 static WIDTH: u32 = 1280;
 static HEIGHT: u32 = 720;
@@ -43,6 +46,10 @@ fn main() {
 
     let s = Shader::new(&[(gl::VERTEX_SHADER, "res/shaders/test.vs"),
                             (gl::FRAGMENT_SHADER, "res/shaders/test.fs")]).expect("kek");
+
+    let camera = StaticCamera::new(glm::vec3(3.0, 3.0, 3.0), 
+                                    glm::vec3(0.0, 0.0, 0.0),
+                                    16.0/9.0, 0.7853);
 
     let mut initialized = false;
     let mut test_quad = VertexBuffer::default();
@@ -85,6 +92,8 @@ fn main() {
             initialized = true;
         } else {
             s.bind();
+            s.uniform_matrix4("viewMatrix", camera.get_view_matrix());
+            s.uniform_matrix4("projMatrix", camera.get_projection_matrix());
             test_quad.draw();
         }
 
