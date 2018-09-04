@@ -6,6 +6,8 @@ use std::str;
 use std::ptr;
 use std::ffi::CString;
 
+use glm;
+
 use util;
 
 pub struct Shader {
@@ -17,8 +19,8 @@ impl Shader {
         let mut handles = Vec::new();
 
         for (shader_type, file_name) in shaders {
-            if shader_type != &gl::VERTEX_SHADER && shader_type != &gl::FRAGMENT_SHADER &&
-               shader_type != &gl::COMPUTE_SHADER && shader_type != &gl::GEOMETRY_SHADER {
+            if *shader_type != gl::VERTEX_SHADER && *shader_type != gl::FRAGMENT_SHADER &&
+               *shader_type != gl::COMPUTE_SHADER && *shader_type != gl::GEOMETRY_SHADER {
                 return Err("shader_type isnt supported".to_string());
             }
 
@@ -68,6 +70,15 @@ impl Shader {
             let ret = Shader { program: program };
 
             Ok(ret)
+        }
+    }
+
+    pub fn uniform_matrix4(&self, name: &str, mat: glm::Mat4) {
+        unsafe {
+            let cname = CString::new(name.as_bytes()).unwrap();
+            let loc = gl::GetUniformLocation(self.program, cname.as_ptr());
+
+            gl::UniformMatrix4fv(loc, 1, gl::FALSE as GLboolean, &mat[0][0] as *const GLfloat)
         }
     }
 
